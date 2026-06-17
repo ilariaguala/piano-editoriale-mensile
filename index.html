@@ -208,7 +208,7 @@ button:active {
     line-height: 1.4;
 }
 
-/* AREA IMMAGINE AMPIA (280PX) CON REAZIONE ZOOM ALL'HOVER */
+/* AREA IMMAGINE AMPIA CON HOVER ZOOM EFFECT */
 .placeholder, .image-preview-container {
     height: 280px;
     background: #f1f5f9;
@@ -248,7 +248,6 @@ button:active {
     font-weight: 500;
 }
 
-/* APERTURA EFFETTO VISIVO D'IMPATTO AL PASSAGGIO MOUSE */
 .image-preview {
     width: 100%;
     height: 100%;
@@ -552,14 +551,14 @@ button:active {
 
 <script>
 // =======================================================
-// CONFIGURAZIONE DATABASE CLOUD (FIREBASE CON CHIAVE PRIVATA)
+// CONFIGURAZIONE DATABASE CLOUD AGGIORNATA
 // =======================================================
 const firebaseConfig = {
-    apiKey: "eyorekFr3N9ecPHrEQiec9WQe9vKJk62KeFV5EwFDSM",
-    authDomain: "piano-editoriale-mensile.firebaseapp.com",
-    databaseURL: "https://piano-editoriale-mensile-default-rtdb.europe-west1.firebasedatabase.app",
-    projectId: "piano-editoriale-mensile",
-    storageBucket: "piano-editoriale-mensile.firebasestorage.app",
+    apiKey: "AIzaSyDLsaTE3d1bBgv2QgF9vsnLPT60KELxgzE",
+    authDomain: "piano-editoriale-cloud.firebaseapp.com",
+    databaseURL: "https://piano-editoriale-cloud-default-rtdb.europe-west1.firebasedatabase.app",
+    projectId: "piano-editoriale-cloud",
+    storageBucket: "piano-editoriale-cloud.firebasestorage.app",
     messagingSenderId: "388347437220",
     appId: "1:388347437220:web:5f5af3453328dd89c44631"
 };
@@ -716,7 +715,7 @@ function addCard() {
 }
 
 function resetTutto() {
-    if(confirm("Sei sicuro? This will clean current board text items.")) {
+    if(confirm("Sei sicuro? Questo cancellerà tutti i post correnti nel cloud.")) {
         boardRef.remove();
     }
 }

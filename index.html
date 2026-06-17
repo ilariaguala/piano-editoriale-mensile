@@ -208,7 +208,7 @@ button:active {
     line-height: 1.4;
 }
 
-/* AREA IMMAGINE E PREVIEW (AUMENTATA A 280PX CON EFFETTO HOVER EMERGENTE) */
+/* AREA IMMAGINE AMPIA (280PX) CON REAZIONE ZOOM ALL'HOVER */
 .placeholder, .image-preview-container {
     height: 280px;
     background: #f1f5f9;
@@ -248,7 +248,7 @@ button:active {
     font-weight: 500;
 }
 
-/* EFFETTO DI APERTURA/ZOOM FLUIDO ALL'HOVER */
+/* APERTURA EFFETTO VISIVO D'IMPATTO AL PASSAGGIO MOUSE */
 .image-preview {
     width: 100%;
     height: 100%;
@@ -552,14 +552,14 @@ button:active {
 
 <script>
 // =======================================================
-// CONFIGURAZIONE DATABASE CLOUD (FIREBASE)
+// CONFIGURAZIONE DATABASE CLOUD (FIREBASE CON CHIAVE PRIVATA)
 // =======================================================
 const firebaseConfig = {
-    apiKey: "AIzaSyDLsaTE3d1bBgv2QgF9vsnLPT60KELxgzE",
-    authDomain: "piano-editoriale-cloud.firebaseapp.com",
-    databaseURL: "https://piano-editoriale-cloud-default-rtdb.europe-west1.firebasedatabase.app",
-    projectId: "piano-editoriale-cloud",
-    storageBucket: "piano-editoriale-cloud.firebasestorage.app",
+    apiKey: "eyorekFr3N9ecPHrEQiec9WQe9vKJk62KeFV5EwFDSM",
+    authDomain: "piano-editoriale-mensile.firebaseapp.com",
+    databaseURL: "https://piano-editoriale-mensile-default-rtdb.europe-west1.firebasedatabase.app",
+    projectId: "piano-editoriale-mensile",
+    storageBucket: "piano-editoriale-mensile.firebasestorage.app",
     messagingSenderId: "388347437220",
     appId: "1:388347437220:web:5f5af3453328dd89c44631"
 };
@@ -590,7 +590,6 @@ boardRef.on('value', (snapshot) => {
     const cloudData = snapshot.val();
     
     if (!cloudData) {
-        // Se la lavagna è vuota o nuova, inizializzala con i dati di esempio
         const defaultPosts = [
             {
                 platform: "ig",
@@ -668,7 +667,7 @@ function selectImage(index) {
 
 document.getElementById('hiddenFileInput').addEventListener('change', function(event) {
     const file = event.target.files[0];
-    const maxSizeBytes = 1.8 * 1024 * 1024; // Sotto i 2MB per performance ottimali nel database
+    const maxSizeBytes = 1.8 * 1024 * 1024; 
 
     if (file && currentImageTargetIndex !== -1) {
         if (file.size > maxSizeBytes) {
@@ -717,11 +716,10 @@ function addCard() {
 }
 
 function resetTutto() {
-    if(confirm("Sei sicuro? Questo cancellerà tutti i post di QUESTA lavagna sul cloud.")) {
+    if(confirm("Sei sicuro? This will clean current board text items.")) {
         boardRef.remove();
     }
 }
-// Nota: la funzione cambiaBoard() via prompt rimane disponibile via codice se serve, ma è stata rimossa dall'interfaccia.
 
 function render() {
     const grid = document.getElementById("grid");

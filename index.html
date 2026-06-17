@@ -1218,7 +1218,7 @@ button:active {
 
 
 
-<input type="file" id="hiddenFileInput" style="display: none;" accept="image/*">
+<input type="file" id="hiddenFileInput" style="display: none;" accept="image/*,video/mp4">
 
 
 
@@ -1320,7 +1320,8 @@ boardRef.on('value', (snapshot) => {
 
                 time: "18:30",
 
-                imageUrl: ""
+                imageUrl: "",
+                mediaType: "image"
 
             },
 
@@ -1340,7 +1341,8 @@ boardRef.on('value', (snapshot) => {
 
                 time: "12:00",
 
-                imageUrl: ""
+                imageUrl: "",
+                mediaType: "image"
 
             }
 
@@ -1439,6 +1441,7 @@ function togglePlatform(index) {
 
 
 let currentImageTargetIndex = -1;
+let currentMediaType = "image";
 
 
 
@@ -1479,6 +1482,7 @@ document.getElementById('hiddenFileInput').addEventListener('change', function(e
         reader.onload = function(e) {
 
             data[currentImageTargetIndex].imageUrl = e.target.result;
+            data[currentImageTargetIndex].mediaType = file.type.startsWith('video') ? 'video' : 'image';
 
             boardRef.child("posts").set(data);
 
@@ -1542,7 +1546,8 @@ function addCard() {
 
         time: "00:00",
 
-        imageUrl: ""
+        imageUrl: "",
+                mediaType: "image"
 
     });
 
@@ -1700,6 +1705,10 @@ function render() {
 
 
 
+
+<div id="mediaModal" style="display:none;position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,.95);z-index:99999;justify-content:center;align-items:center;">
+<div id="mediaContainer" style="max-width:95%;max-height:95%;"></div>
+</div>
 </body>
 
 </html>

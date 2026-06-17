@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+<<!DOCTYPE html>
 
 <html lang="it">
 
@@ -1341,8 +1341,7 @@ boardRef.on('value', (snapshot) => {
 
                 time: "12:00",
 
-                imageUrl: "",
-                mediaType: "image"
+                imageUrl: ""
 
             }
 
@@ -1441,7 +1440,6 @@ function togglePlatform(index) {
 
 
 let currentImageTargetIndex = -1;
-let currentMediaType = "image";
 
 
 
@@ -1482,7 +1480,7 @@ document.getElementById('hiddenFileInput').addEventListener('change', function(e
         reader.onload = function(e) {
 
             data[currentImageTargetIndex].imageUrl = e.target.result;
-            data[currentImageTargetIndex].mediaType = file.type.startsWith('video') ? 'video' : 'image';
+            data[currentImageTargetIndex].mediaType = file.type.startsWith("video") ? "video" : "image";
 
             boardRef.child("posts").set(data);
 
@@ -1546,8 +1544,7 @@ function addCard() {
 
         time: "00:00",
 
-        imageUrl: "",
-                mediaType: "image"
+        imageUrl: ""
 
     });
 
@@ -1568,6 +1565,15 @@ function resetTutto() {
 }
 
 
+
+
+function openMedia(url, type) {
+ const modal=document.getElementById("mediaModal");
+ const c=document.getElementById("mediaContainer");
+ c.innerHTML = type==="video" ? `<video controls autoplay style="max-width:95vw;max-height:90vh;"><source src="${url}" type="video/mp4"></video>` : `<img src="${url}" style="max-width:95vw;max-height:90vh;">`;
+ modal.style.display="flex";
+}
+function closeMedia(){document.getElementById("mediaModal").style.display="none";document.getElementById("mediaContainer").innerHTML="";}
 
 function render() {
 
@@ -1601,7 +1607,7 @@ function render() {
 
             <div class="image-preview-container">
 
-                <img src="${item.imageUrl}" class="image-preview" alt="Preview">
+                ${item.mediaType === "video" ? `<video class="image-preview" muted onclick="openMedia(\'${item.imageUrl}\', \'video\')"><source src="${item.imageUrl}" type="video/mp4"></video>` : `<img src="${item.imageUrl}" class="image-preview" alt="Preview" onclick="openMedia(\'${item.imageUrl}\', \'image\')">`}
 
                 <button class="remove-image-btn" onclick="removeImage(${i})" title="Rimuovi immagine">X</button>
 
@@ -1705,10 +1711,7 @@ function render() {
 
 
 
-
-<div id="mediaModal" style="display:none;position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,.95);z-index:99999;justify-content:center;align-items:center;">
-<div id="mediaContainer" style="max-width:95%;max-height:95%;"></div>
-</div>
+<div id="mediaModal" onclick="closeMedia()" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,.95);z-index:99999;justify-content:center;align-items:center;"><div id="mediaContainer"></div></div>
 </body>
 
 </html>

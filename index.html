@@ -4,12 +4,9 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Piano Editoriale Premium Cloud</title>
-
 <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-app-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-database-compat.js"></script>
-
 <style>
-/* CLASSE DI PRESTIGIO E BASE VARIABILI */
 :root {
     --bg-main: #f8fafc;
     --bg-card: #ffffff;
@@ -21,599 +18,58 @@
     --shadow-sm: 0 2px 8px rgba(15, 23, 42, 0.04);
     --shadow-md: 0 10px 30px rgba(15, 23, 42, 0.08);
 }
-
-body {
-    margin: 0;
-    font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
-    background: var(--bg-main);
-    color: var(--text-main);
-    padding: 30px;
-    line-height: 1.5;
-}
-
-/* HEADER CONTAINER DI ALTO LIVELLO */
-.header-container {
-    background: var(--bg-card);
-    border-radius: 24px;
-    padding: 32px;
-    box-shadow: var(--shadow-md);
-    margin-bottom: 32px;
-    border: 1px solid var(--border-color);
-}
-
-.header-row {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    flex-wrap: wrap;
-    gap: 20px;
-}
-
-.header-title {
-    margin: 0;
-    font-size: 28px;
-    font-weight: 800;
-    letter-spacing: -0.5px;
-    display: inline-block;
-    border-bottom: 2px dashed #cbd5e1;
-    padding: 2px 8px;
-    color: var(--text-main);
-}
-
-/* BOTTONI PREMIUM */
-.btn-group {
-    display: flex;
-    gap: 12px;
-    flex-wrap: wrap;
-}
-
-button {
-    border: none;
-    padding: 12px 22px;
-    border-radius: 12px;
-    cursor: pointer;
-    font-weight: 600;
-    font-size: 14px;
-    transition: all 0.2s ease;
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    gap: 8px;
-}
-
-button:active {
-    transform: scale(0.98);
-}
-
-.add { 
-    background: #0f172a; 
-    color: white; 
-    box-shadow: 0 4px 12px rgba(15, 23, 42, 0.15);
-}
-.add:hover { background: #1e293b; }
-
-.export { 
-    background: #0284c7; 
-    color: white; 
-    box-shadow: 0 4px 12px rgba(2, 132, 199, 0.15);
-}
-.export:hover { background: #0369a1; }
-
-.clear-btn { 
-    background: #ef4444; 
-    color: white; 
-    font-size: 13px; 
-    padding: 8px 14px;
-}
-.clear-btn:hover { background: #dc2626; }
-
-/* META INFO SUBHEADER */
-.meta-info {
-    margin-top: 20px;
-    padding-top: 20px;
-    border-top: 1px solid var(--border-color);
-    font-size: 15px;
-    color: var(--text-muted);
-    display: flex;
-    flex-wrap: wrap;
-    gap: 16px;
-}
-
-.meta-item {
-    display: flex;
-    align-items: center;
-    gap: 6px;
-    flex-wrap: wrap;
-}
-
-.meta-field {
-    font-weight: 700;
-    color: #475569;
-    text-transform: uppercase;
-    font-size: 12px;
-    letter-spacing: 0.5px;
-}
-
-/* CAMPI EDITABILI */
-[contenteditable="true"] {
-    outline: none;
-    border-bottom: 1px dashed #cbd5e1;
-    padding: 2px 4px;
-    border-radius: 4px;
-    transition: all 0.2s;
-}
-
-[contenteditable="true"]:focus {
-    background: #f1f5f9;
-    border-bottom-color: #0f172a;
-    box-shadow: 0 2px 4px rgba(0,0,0,0.02);
-}
-
-/* GRID DEI POST - Aggiornata per Desktop e Mobile */
-.grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(380px, 1fr));
-    gap: 30px;
-}
-
-/* CARD STRUTTURA PREMIUM */
-.card {
-    background: var(--bg-card);
-    border-radius: 24px;
-    padding: 26px;
-    box-shadow: var(--shadow-sm);
-    position: relative;
-    display: flex;
-    flex-direction: column;
-    gap: 16px;
-    border: 1px solid var(--border-color);
-    transition: transform 0.2s ease, box-shadow 0.2s ease;
-}
-
-.card:hover {
-    transform: translateY(-2px);
-    box-shadow: var(--shadow-md);
-}
-
-/* BADGES PIATTAFORMA */
-.badge {
-    display: inline-flex;
-    align-items: center;
-    align-self: flex-start;
-    padding: 6px 16px;
-    border-radius: 30px;
-    font-size: 12px;
-    font-weight: 700;
-    color: white;
-    cursor: pointer;
-    user-select: none;
-    transition: transform 0.2s ease;
-    text-transform: uppercase;
-    letter-spacing: 0.5px;
-    box-shadow: 0 4px 10px rgba(0,0,0,0.05);
-}
-.badge:hover { transform: scale(1.04); }
-.badge::after { content: " ⇄"; font-size: 11px; opacity: 0.8; margin-left: 4px; }
-
+body { margin: 0; font-family: system-ui, -apple-system, sans-serif; background: var(--bg-main); color: var(--text-main); padding: 30px; }
+.header-container { background: var(--bg-card); border-radius: 24px; padding: 32px; box-shadow: var(--shadow-md); margin-bottom: 32px; border: 1px solid var(--border-color); }
+.header-row { display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 20px; }
+.header-title { margin: 0; font-size: 28px; font-weight: 800; border-bottom: 2px dashed #cbd5e1; padding: 2px 8px; }
+.btn-group { display: flex; gap: 12px; }
+button { border: none; padding: 12px 22px; border-radius: 12px; cursor: pointer; font-weight: 600; transition: all 0.2s; }
+.add { background: #0f172a; color: white; }
+.export { background: #0284c7; color: white; }
+.clear-btn { background: #ef4444; color: white; }
+.grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(380px, 1fr)); gap: 30px; }
+.card { background: var(--bg-card); border-radius: 24px; padding: 26px; border: 1px solid var(--border-color); position: relative; display: flex; flex-direction: column; gap: 16px; }
+.badge { display: inline-flex; align-items: center; align-self: flex-start; padding: 6px 16px; border-radius: 30px; font-size: 12px; font-weight: 700; color: white; cursor: pointer; text-transform: uppercase; }
 .ig { background: var(--accent-ig); }
 .fb { background: var(--accent-fb); }
+.image-preview-container { height: 280px; background: #f1f5f9; border-radius: 16px; overflow: hidden; position: relative; cursor: zoom-in; }
+.image-preview { width: 100%; height: 100%; object-fit: cover; }
+.remove-image-btn { position: absolute; top: 10px; right: 10px; background: rgba(255,255,255,0.9); border-radius: 50%; border: none; cursor: pointer; padding: 5px 10px; color: #ef4444; }
+.placeholder { height: 280px; border: 2px dashed #cbd5e1; border-radius: 16px; display: flex; flex-direction: column; align-items: center; justify-content: center; cursor: pointer; color: #64748b; }
+[contenteditable="true"]:focus { background: #f1f5f9; outline: none; border-radius: 4px; }
+.field-row { display: flex; gap: 8px; border-bottom: 1px dashed #f1f5f9; padding: 4px 0; }
+.field-label { font-weight: 700; color: #475569; min-width: 75px; }
 
-/* TITOLO CONTENUTO DELLA CARD */
-.card-title {
-    font-size: 19px;
-    font-weight: 700;
-    color: var(--text-main);
-    width: 85%;
-    line-height: 1.4;
-    word-break: break-word;
-}
-
-/* AREA IMMAGINE AMPIA CON HOVER ZOOM EFFECT */
-.placeholder, .image-preview-container {
-    height: 280px;
-    background: #f1f5f9;
-    border-radius: 16px;
-    margin: 2px 0;
-    user-select: none;
-    cursor: pointer;
-    overflow: hidden;
-    position: relative;
-    border: 2px dashed #cbd5e1;
-    transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
-}
-
-.placeholder:hover {
-    border-color: #94a3b8;
-    background: #e2e8f0;
-}
-
-.placeholder {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    color: #64748b;
-    font-size: 14px;
-}
-
-.plus-icon {
-    font-size: 32px;
-    margin-bottom: 4px;
-    font-weight: 300;
-}
-
-.placeholder-text {
-    text-align: center;
-    padding: 0 12px;
-    font-weight: 500;
-}
-
-.image-preview {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-    transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1), filter 0.3s ease;
-}
-
-.image-preview-container:hover .image-preview {
-    transform: scale(1.06);
-    filter: brightness(1.02);
-}
-
-/* RIMOZIONE IMMAGINE */
-.remove-image-btn {
-    position: absolute;
-    top: 12px;
-    right: 12px;
-    background: rgba(255, 255, 255, 0.9);
-    color: #ef4444;
-    border: none;
-    width: 26px;
-    height: 26px;
-    border-radius: 50%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-weight: bold;
-    cursor: pointer;
-    font-size: 11px;
-    box-shadow: 0 2px 8px rgba(0,0,0,0.15);
-    transition: background 0.2s, transform 0.2s;
-    z-index: 10;
-}
-
-.remove-image-btn:hover {
-    background: #ffffff;
-    transform: scale(1.05);
-}
-
-/* RIGA CAMPI DATI */
-.field-row {
-    font-size: 14px;
-    display: flex;
-    align-items: flex-start;
-    gap: 8px;
-    padding: 6px 0;
-    border-bottom: 1px dashed #f1f5f9;
-}
-
-.field-label {
-    font-weight: 700;
-    color: #475569;
-    white-space: nowrap;
-    min-width: 75px;
-}
-
-.field-value {
-    display: inline-block;
-    flex-grow: 1;
-    color: #334155;
-    min-width: 150px;
-    word-break: break-word;
-}
-
-/* FOOTER CARD (DATA E ORA) */
-.card-footer {
-    margin-top: 6px;
-    padding-top: 14px;
-    border-top: 1px solid #f1f5f9;
-    font-size: 13px;
-    color: var(--text-muted);
-    display: flex;
-    justify-content: space-between;
-    gap: 16px;
-}
-
-.footer-item {
-    display: flex;
-    align-items: center;
-    gap: 6px;
-    flex: 1;
-}
-
-.footer-item .field-label {
-    min-width: unset;
-}
-
-/* TASTO ELIMINA POST */
-.delete-btn {
-    position: absolute;
-    top: 22px;
-    right: 22px;
-    background: #fef2f2;
-    color: #ef4444;
-    border: none;
-    width: 30px;
-    height: 30px;
-    border-radius: 50%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-weight: bold;
-    cursor: pointer;
-    font-size: 12px;
-    transition: all 0.2s ease;
-    z-index: 10;
-}
-.delete-btn:hover { 
-    background: #ef4444; 
-    color: white;
-    transform: scale(1.05);
-}
-
-/* =======================================================
-   📱 MEDIA QUERY PER SMARTPHONE E TABLET (RESPONSIVE)
-   ======================================================= */
-@media (max-width: 768px) {
-    body {
-        padding: 12px; /* Riduce lo spazio ai bordi dello smartphone */
-    }
-
-    .header-container {
-        padding: 20px;
-        border-radius: 16px;
-        margin-bottom: 20px;
-    }
-
-    .header-title {
-        font-size: 22px;
-        width: 100%;
-        text-align: center;
-        border-bottom: none;
-    }
-
-    .btn-group {
-        width: 100%;
-        flex-direction: column; /* I bottoni si impilano verticalmente sul telefono */
-        gap: 8px;
-    }
-
-    button {
-        width: 100%; /* Bottoni a tutta larghezza, più facili da cliccare */
-        padding: 14px;
-    }
-
-    .clear-btn {
-        order: 3; /* Sposta il tasto reset in fondo */
-    }
-
-    .meta-info {
-        flex-direction: column;
-        gap: 12px;
-    }
-
-    .grid {
-        grid-template-columns: 1fr; /* Forza una sola colonna sui display piccoli */
-        gap: 16px;
-    }
-
-    .card {
-        padding: 18px;
-        border-radius: 16px;
-    }
-
-    .card-title {
-        font-size: 17px;
-    }
-
-    .placeholder, .image-preview-container {
-        height: 200px; /* Riduce l'altezza dell'immagine sul telefono per risparmiare spazio */
-    }
-}
-
-/* =======================================================
-   🎨 STAMPA AD ALTA DENSITÀ
-   ======================================================= */
-@media print {
-    * {
-        -webkit-print-color-adjust: exact !important;
-        print-color-adjust: exact !important;
-        box-sizing: border-box;
-    }
-
-    @page {
-        size: A4 landscape;
-        margin: 8mm 10mm;
-    }
-
-    body { 
-        background: #f8fafc !important; 
-        color: #0f172a !important; 
-        padding: 0 !important;
-        font-size: 9pt !important;
-    }
-
-    .header-container { 
-        background: #ffffff !important;
-        box-shadow: none !important;
-        border: 1px solid #e2e8f0 !important;
-        padding: 14px 20px !important;
-        margin-bottom: 16px !important;
-        border-radius: 12px !important;
-    }
-
-    .header-title {
-        font-size: 18px !important;
-        border-bottom: none !important;
-        padding: 0 !important;
-        margin-bottom: 4px !important;
-    }
-    
-    .meta-info {
-        margin-top: 10px !important;
-        padding-top: 10px !important;
-        gap: 12px !important;
-        font-size: 11px !important;
-    }
-
-    .btn-group, 
-    .delete-btn, 
-    .clear-btn, 
-    .badge::after, 
-    .remove-image-btn, 
-    .plus-icon { 
-        display: none !important; 
-    }
-
-    .grid { 
-        display: grid !important;
-        grid-template-columns: repeat(4, 1fr) !important; 
-        gap: 12px !important;
-        width: 100% !important;
-        justify-content: center !important;
-    }
-
-    .card { 
-        background: #ffffff !important;
-        border: 1px solid #cbd5e1 !important;
-        box-shadow: none !important;
-        border-radius: 12px !important;
-        padding: 12px !important;
-        gap: 8px !important;
-        page-break-inside: avoid !important;
-        break-inside: avoid !important;
-        transform: none !important;
-        min-width: 0 !important;
-    }
-
-    .badge {
-        border: 1px solid rgba(0,0,0,0.05) !important;
-        padding: 3px 10px !important;
-        font-size: 9px !important;
-        border-radius: 12px !important;
-        display: inline-block !important;
-    }
-    
-    .badge.ig {
-        background: linear-gradient(135deg, #f09433 0%, #e6683c 25%, #dc2743 50%, #cc2366 75%, #bc1888 100%) !important;
-    }
-    
-    .badge.fb {
-        background: #1877f2 !important;
-    }
-
-    [contenteditable="true"] { 
-        border-bottom: none !important; 
-        padding: 0 !important; 
-        background: transparent !important;
-    }
-
-    .card-title {
-        font-size: 12px !important;
-        font-weight: 700 !important;
-        color: #0f172a !important;
-        width: 100% !important;
-        line-height: 1.3 !important;
-    }
-
-    .placeholder {
-        background: #f1f5f9 !important;
-        border: 1px dashed #cbd5e1 !important;
-        height: 60px !important;
-        margin: 0 !important;
-    }
-    
-    .image-preview-container {
-        height: 60px !important;
-        border: none !important;
-        margin: 0 !important;
-    }
-
-    .placeholder-text {
-        color: #64748b !important;
-        font-size: 10px !important;
-    }
-
-    .field-row {
-        font-size: 11px !important;
-        padding: 2px 0 !important;
-        border-bottom: 1px solid #f1f5f9 !important;
-        gap: 4px !important;
-    }
-
-    .field-label {
-        color: #475569 !important;
-        min-width: 55px !important;
-        font-size: 10px !important;
-    }
-
-    .field-value {
-        color: #1e293b !important;
-        font-size: 10px !important;
-        min-width: 0 !important;
-        word-break: break-word !important;
-    }
-
-    .card-footer {
-        margin-top: 2px !important;
-        padding-top: 4px !important;
-        border-top: 1px solid #f1f5f9 !important;
-        font-size: 10px !important;
-        gap: 8px !important;
-    }
-    
-    .footer-item {
-        gap: 2px !important;
-    }
-}
+/* LIGHTBOX */
+.lightbox-overlay { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(15,23,42,0.95); z-index: 1000; justify-content: center; align-items: center; }
+.lightbox-overlay.active { display: flex; }
+.lightbox-image { max-width: 90%; max-height: 90vh; border-radius: 12px; }
+.lightbox-close { position: absolute; top: 20px; right: 30px; color: white; font-size: 40px; cursor: pointer; }
 </style>
 </head>
 <body>
 
 <div class="header-container">
     <div class="header-row">
-        <h2 class="header-title" contenteditable="true" id="main-title" onblur="saveHeader()">📅 Piano Editoriale Mensile</h2>
+        <h2 class="header-title" contenteditable="true" id="main-title" onblur="saveHeader()">📅 Piano Editoriale</h2>
         <div class="btn-group">
-            <button class="clear-btn" onclick="resetTutto()" title="Cancella la lavagna corrente dal cloud">Svuota Lavagna</button>
-            <button class="add" onclick="addCard()">+ Aggiungi Post</button>
-            <button class="export" onclick="window.print()">Export PDF</button>
-        </div>
-    </div>
-
-    <div class="meta-info">
-        <div class="meta-item">
-            <span class="meta-field">Brand:</span> 
-            <span contenteditable="true" id="header-brand" onblur="saveHeader()">Nome Brand</span>
-        </div>
-        <div class="meta-item">
-            <span class="meta-field">Mese:</span> 
-            <span contenteditable="true" id="header-mese" onblur="saveHeader()">Gennaio 2026</span>
-        </div>
-        <div class="meta-item">
-            <span class="meta-field">KPI:</span> 
-            <span contenteditable="true" id="header-kpi" onblur="saveHeader()">Engagement / Awareness / Traffico</span>
+            <button class="clear-btn" onclick="resetTutto()">Svuota</button>
+            <button class="add" onclick="addCard()">+ Aggiungi</button>
+            <button class="export" onclick="window.print()">Export</button>
         </div>
     </div>
 </div>
 
 <div class="grid" id="grid"></div>
 
+<div class="lightbox-overlay" id="lightbox" onclick="closeLightbox()">
+    <span class="lightbox-close">&times;</span>
+    <img class="lightbox-image" id="lightbox-img" src="" alt="Zoom">
+</div>
+
 <input type="file" id="hiddenFileInput" style="display: none;" accept="image/*">
 
 <script>
-// =======================================================
-// CONFIGURAZIONE DATABASE CLOUD AGGIORNATA
-// =======================================================
 const firebaseConfig = {
     apiKey: "AIzaSyDLsaTE3d1bBgv2QgF9vsnLPT60KELxgzE",
     authDomain: "piano-editoriale-cloud.firebaseapp.com",
@@ -623,231 +79,59 @@ const firebaseConfig = {
     messagingSenderId: "388347437220",
     appId: "1:388347437220:web:5f5af3453328dd89c44631"
 };
-
-// Inizializzazione Firebase
 firebase.initializeApp(firebaseConfig);
 const db = firebase.database();
-
-// Gestione ID Lavagna Tramite URL (?b=nome_lavagna)
-const urlParams = new URLSearchParams(window.location.search);
-let boardId = urlParams.get('b') || 'default';
-
-// Riferimento Firebase specifico per questa lavagna
-const boardRef = db.ref("boards/" + boardId);
+const boardRef = db.ref("boards/" + (new URLSearchParams(window.location.search).get('b') || 'default'));
 
 let data = [];
-let headerData = {
-    title: "📅 Piano Editoriale Mensile",
-    brand: "Nome Brand",
-    mese: "Gennaio 2026",
-    kpi: "Engagement / Awareness / Traffico"
-};
-
-// =======================================================
-// ASYNC CLOUD SYNC (Sincronizzazione in tempo reale)
-// =======================================================
-boardRef.on('value', (snapshot) => {
-    const cloudData = snapshot.val();
-    
-    if (!cloudData) {
-        const defaultPosts = [
-            {
-                platform: "ig",
-                title: "Titolo contenuto Strategico",
-                copy: "Inserisci qui il testo descrittivo per la didascalia...",
-                goal: "Engagement / Traffico / Brand Awareness",
-                notes: "Linee guida visual, concept creativo e hashtags...",
-                date: "15 Gennaio 2026",
-                time: "18:30",
-                imageUrl: ""
-            },
-            {
-                platform: "fb",
-                title: "Titolo contenuto di Lancio",
-                copy: "Inserisci qui il testo descrittivo per la didascalia...",
-                goal: "Traffico al sito web",
-                notes: "Includere link tracciato nel primo commento...",
-                date: "18 Gennaio 2026",
-                time: "12:00",
-                imageUrl: ""
-            }
-        ];
-        boardRef.set({ header: headerData, posts: defaultPosts });
-    } else {
-        data = cloudData.posts || [];
-        headerData = cloudData.header || headerData;
-        
-        applyHeaderData();
-        render();
-    }
-});
-
-function saveAllToCloud() {
-    boardRef.set({
-        header: headerData,
-        posts: data
-    });
-}
-
-function saveHeader() {
-    headerData.title = document.getElementById("main-title").innerText;
-    headerData.brand = document.getElementById("header-brand").innerText;
-    headerData.mese = document.getElementById("header-mese").innerText;
-    headerData.kpi = document.getElementById("header-kpi").innerText;
-    boardRef.child("header").set(headerData);
-}
-
-function applyHeaderData() {
-    document.getElementById("main-title").innerText = headerData.title;
-    document.getElementById("header-brand").innerText = headerData.brand;
-    document.getElementById("header-mese").innerText = headerData.mese;
-    document.getElementById("header-kpi").innerText = headerData.kpi;
-}
-
-function updatePostField(index, field, value) {
-    if(data[index]) {
-        data[index][field] = value;
-        boardRef.child("posts").set(data);
-    }
-}
-
-function togglePlatform(index) {
-    if(data[index]) {
-        data[index].platform = data[index].platform === "ig" ? "fb" : "ig";
-        boardRef.child("posts").set(data);
-    }
-}
-
 let currentImageTargetIndex = -1;
 
-function selectImage(index) {
-    currentImageTargetIndex = index;
-    document.getElementById('hiddenFileInput').click();
-}
-
-document.getElementById('hiddenFileInput').addEventListener('change', function(event) {
-    const file = event.target.files[0];
-    const maxSizeBytes = 1.8 * 1024 * 1024; 
-
-    if (file && currentImageTargetIndex !== -1) {
-        if (file.size > maxSizeBytes) {
-            alert("L'immagine è troppo grande. Il limite consigliato è di 1.8MB per garantire velocità di caricamento simultanea.");
-            event.target.value = '';
-            return;
-        }
-
-        const reader = new FileReader();
-        reader.onload = function(e) {
-            data[currentImageTargetIndex].imageUrl = e.target.result;
-            boardRef.child("posts").set(data);
-            currentImageTargetIndex = -1;
-        };
-        reader.readAsDataURL(file);
-    }
-    event.target.value = '';
+boardRef.on('value', (snapshot) => {
+    const val = snapshot.val();
+    data = val ? (val.posts || []) : [];
+    render();
 });
 
-function removeImage(index) {
-    if(confirm("Vuoi rimuovere l'immagine da questo post?")) {
-        data[index].imageUrl = "";
-        boardRef.child("posts").set(data);
-    }
+function openLightbox(url) {
+    document.getElementById('lightbox-img').src = url;
+    document.getElementById('lightbox').classList.add('active');
 }
-
-function deleteCard(index) {
-    if(confirm("Vuoi eliminare questo post?")) {
-        data.splice(index, 1);
-        boardRef.child("posts").set(data);
-    }
-}
-
-function addCard() {
-    data.push({
-        platform: "ig",
-        title: "Nuovo Titolo Contenuto",
-        copy: "testo descrizione...",
-        goal: "obiettivo...",
-        notes: "note...",
-        date: "gg/mm/aaaa",
-        time: "00:00",
-        imageUrl: ""
-    });
-    boardRef.child("posts").set(data);
-}
-
-function resetTutto() {
-    if(confirm("Sei sicuro? Questo cancellerà tutti i post correnti nel cloud.")) {
-        boardRef.remove();
-    }
-}
+function closeLightbox() { document.getElementById('lightbox').classList.remove('active'); }
 
 function render() {
     const grid = document.getElementById("grid");
-    if(!grid) return;
     grid.innerHTML = "";
-
     data.forEach((item, i) => {
-        const isIg = item.platform === "ig";
-        const badgeClass = isIg ? "ig" : "fb";
-        const badgeText = isIg ? "Instagram" : "Facebook";
-        const previewText = isIg ? "Immagine / Reel Preview" : "Immagine / Visual";
-
         const card = document.createElement("div");
         card.className = "card";
-
-        const imageAreaContent = item.imageUrl ? `
-            <div class="image-preview-container">
-                <img src="${item.imageUrl}" class="image-preview" alt="Preview">
-                <button class="remove-image-btn" onclick="removeImage(${i})" title="Rimuovi immagine">X</button>
-            </div>
-        ` : `
-            <div class="placeholder image-placeholder" onclick="selectImage(${i})" title="Clicca per aggiungere un'immagine">
-                <span class="plus-icon">+</span>
-                <span class="placeholder-text">${previewText}</span>
-            </div>
-        `;
-
+        const imageHtml = item.imageUrl 
+            ? `<div class="image-preview-container" onclick="openLightbox('${item.imageUrl}')"><img src="${item.imageUrl}" class="image-preview"><button class="remove-image-btn" onclick="event.stopPropagation(); removeImage(${i})">X</button></div>`
+            : `<div class="placeholder" onclick="selectImage(${i})"><span>+ Aggiungi Immagine</span></div>`;
+        
         card.innerHTML = `
-            <button class="delete-btn" onclick="deleteCard(${i})">X</button>
-
-            <div class="badge ${badgeClass}" onclick="togglePlatform(${i})" title="Clicca per cambiare piattaforma">
-                ${badgeText}
-            </div>
-
-            <div class="card-title" contenteditable="true" onblur="updatePostField(${i}, 'title', this.innerText)">${item.title}</div>
-
-            ${imageAreaContent}
-
-            <div class="field-row">
-                <span class="field-label">Copy:</span>
-                <div class="field-value" contenteditable="true" onblur="updatePostField(${i}, 'copy', this.innerText)">${item.copy}</div>
-            </div>
-
-            <div class="field-row">
-                <span class="field-label">Obiettivo:</span>
-                <div class="field-value" contenteditable="true" onblur="updatePostField(${i}, 'goal', this.innerText)">${item.goal}</div>
-            </div>
-
-            <div class="field-row">
-                <span class="field-label">Note:</span>
-                <div class="field-value" contenteditable="true" onblur="updatePostField(${i}, 'notes', this.innerText)">${item.notes}</div>
-            </div>
-
-            <div class="card-footer">
-                <div class="footer-item">
-                    <span class="field-label">Data:</span>
-                    <span class="field-value" contenteditable="true" onblur="updatePostField(${i}, 'date', this.innerText)">${item.date}</span>
-                </div>
-                <div class="footer-item">
-                    <span class="field-label">Ora:</span>
-                    <span class="field-value" contenteditable="true" onblur="updatePostField(${i}, 'time', this.innerText)">${item.time}</span>
-                </div>
-            </div>
+            <div class="badge ${item.platform}" onclick="togglePlatform(${i})">${item.platform.toUpperCase()}</div>
+            <div class="card-title" contenteditable="true" onblur="updateField(${i}, 'title', this.innerText)">${item.title}</div>
+            ${imageHtml}
+            <div class="field-row"><span class="field-label">Copy:</span><div contenteditable="true" onblur="updateField(${i}, 'copy', this.innerText)">${item.copy}</div></div>
+            <button class="clear-btn" style="padding: 5px; font-size: 10px;" onclick="deleteCard(${i})">Elimina Post</button>
         `;
         grid.appendChild(card);
     });
 }
-</script>
 
+function selectImage(i) { currentImageTargetIndex = i; document.getElementById('hiddenFileInput').click(); }
+document.getElementById('hiddenFileInput').onchange = (e) => {
+    const reader = new FileReader();
+    reader.onload = (ev) => { data[currentImageTargetIndex].imageUrl = ev.target.result; boardRef.child("posts").set(data); };
+    reader.readAsDataURL(e.target.files[0]);
+};
+
+function updateField(i, f, v) { data[i][f] = v; boardRef.child("posts").set(data); }
+function togglePlatform(i) { data[i].platform = data[i].platform === 'ig' ? 'fb' : 'ig'; boardRef.child("posts").set(data); }
+function addCard() { data.push({platform: 'ig', title: 'Nuovo Post', copy: '...', imageUrl: ''}); boardRef.child("posts").set(data); }
+function deleteCard(i) { data.splice(i, 1); boardRef.child("posts").set(data); }
+function removeImage(i) { data[i].imageUrl = ''; boardRef.child("posts").set(data); }
+function resetTutto() { if(confirm('Sicuro?')) boardRef.remove(); }
+</script>
 </body>
 </html>

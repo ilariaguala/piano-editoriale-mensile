@@ -64,6 +64,7 @@ body {
 .btn-group {
     display: flex;
     gap: 12px;
+    flex-wrap: wrap;
 }
 
 button {
@@ -76,6 +77,7 @@ button {
     transition: all 0.2s ease;
     display: inline-flex;
     align-items: center;
+    justify-content: center;
     gap: 8px;
 }
 
@@ -121,6 +123,7 @@ button:active {
     display: flex;
     align-items: center;
     gap: 6px;
+    flex-wrap: wrap;
 }
 
 .meta-field {
@@ -146,15 +149,11 @@ button:active {
     box-shadow: 0 2px 4px rgba(0,0,0,0.02);
 }
 
-/* GRID DEI POST */
+/* GRID DEI POST - Aggiornata per Desktop e Mobile */
 .grid {
     display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(460px, 1fr));
+    grid-template-columns: repeat(auto-fill, minmax(380px, 1fr));
     gap: 30px;
-}
-
-@media (max-width: 550px) {
-    .grid { grid-template-columns: 1fr; }
 }
 
 /* CARD STRUTTURA PREMIUM */
@@ -204,8 +203,9 @@ button:active {
     font-size: 19px;
     font-weight: 700;
     color: var(--text-main);
-    width: 88%;
+    width: 85%;
     line-height: 1.4;
+    word-break: break-word;
 }
 
 /* AREA IMMAGINE AMPIA CON HOVER ZOOM EFFECT */
@@ -309,6 +309,7 @@ button:active {
     flex-grow: 1;
     color: #334155;
     min-width: 150px;
+    word-break: break-word;
 }
 
 /* FOOTER CARD (DATA E ORA) */
@@ -358,6 +359,66 @@ button:active {
     background: #ef4444; 
     color: white;
     transform: scale(1.05);
+}
+
+/* =======================================================
+   📱 MEDIA QUERY PER SMARTPHONE E TABLET (RESPONSIVE)
+   ======================================================= */
+@media (max-width: 768px) {
+    body {
+        padding: 12px; /* Riduce lo spazio ai bordi dello smartphone */
+    }
+
+    .header-container {
+        padding: 20px;
+        border-radius: 16px;
+        margin-bottom: 20px;
+    }
+
+    .header-title {
+        font-size: 22px;
+        width: 100%;
+        text-align: center;
+        border-bottom: none;
+    }
+
+    .btn-group {
+        width: 100%;
+        flex-direction: column; /* I bottoni si impilano verticalmente sul telefono */
+        gap: 8px;
+    }
+
+    button {
+        width: 100%; /* Bottoni a tutta larghezza, più facili da cliccare */
+        padding: 14px;
+    }
+
+    .clear-btn {
+        order: 3; /* Sposta il tasto reset in fondo */
+    }
+
+    .meta-info {
+        flex-direction: column;
+        gap: 12px;
+    }
+
+    .grid {
+        grid-template-columns: 1fr; /* Forza una sola colonna sui display piccoli */
+        gap: 16px;
+    }
+
+    .card {
+        padding: 18px;
+        border-radius: 16px;
+    }
+
+    .card-title {
+        font-size: 17px;
+    }
+
+    .placeholder, .image-preview-container {
+        height: 200px; /* Riduce l'altezza dell'immagine sul telefono per risparmiare spazio */
+    }
 }
 
 /* =======================================================

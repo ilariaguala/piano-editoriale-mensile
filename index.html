@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Piano Editorial Premium Cloud</title>
+<title>Piano Editoriale Premium Cloud</title>
 
 <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-app-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-database-compat.js"></script>
@@ -728,28 +728,6 @@ function selectImage(index) {
 }
 
 // =======================================================
-// GESTIONE NUOVA OPZIONE GOOGLE DRIVE LINK
-// =======================================================
-function promptDriveLink(index) {
-    const rawUrl = prompt("Incolla qui il link di condivisione di Google Drive:\n(Verifica che l'accesso sul file sia impostato su 'Chiunque abbia il link')");
-    if (rawUrl) {
-        // Regex per estrarre l'ID univoco del file da qualsiasi struttura di link Drive
-        const regExp = /\/file\/d\/([a-zA-Z0-9_-]+)/;
-        const matches = rawUrl.match(regExp);
-        
-        if (matches && matches[1]) {
-            // Conversione automatica nel link di preview incorporabile (iframe)
-            const embedUrl = `https://drive.google.com/file/d/${matches[1]}/preview`;
-            data[index].imageUrl = embedUrl;
-            data[index].mediaType = "drive";
-            boardRef.child("posts").set(data);
-        } else {
-            alert("Il link inserito non sembra essere un link valido di Google Drive. Riprova controllando l'URL.");
-        }
-    }
-}
-
-// =======================================================
 // GESTIONE MEDIA: COMPRESSIONE E CARICAMENTO
 // =======================================================
 document.getElementById('hiddenFileInput').addEventListener('change', function(event) {
@@ -760,8 +738,9 @@ document.getElementById('hiddenFileInput').addEventListener('change', function(e
         const isVideo = file.type.startsWith("video");
 
         if (isVideo) {
+            // Per i video, manteniamo un limite di peso poiché la compressione JS nativa non è fattibile
             if (file.size > maxVideoSizeBytes) {
-                alert("Il video locale supera i 2.5MB di stabilità della piattaforma.\n\nConsiglio: usa l'opzione 'Google Drive' sotto al riquadro per inserire video pesanti senza limiti!");
+                alert("Il video è troppo grande. Il limite massimo per garantire la stabilità del database è di circa 2.5MB.");
                 event.target.value = '';
                 return;
             }
@@ -771,6 +750,7 @@ document.getElementById('hiddenFileInput').addEventListener('change', function(e
             };
             reader.readAsDataURL(file);
         } else {
+            // Compressione automatica per le immagini tramite Canvas
             compressImage(file, function(compressedDataUrl) {
                 saveMediaState(compressedDataUrl, "image");
             });
@@ -794,7 +774,7 @@ function compressImage(file, callback) {
             const canvas = document.createElement('canvas');
             let width = img.width;
             let height = img.height;
-            const MAX_SIZE = 1200; 
+            const MAX_SIZE = 1200; // Ridimensionamento intelligente
 
             if (width > height && width > MAX_SIZE) {
                 height *= MAX_SIZE / width;
@@ -809,6 +789,7 @@ function compressImage(file, callback) {
             const ctx = canvas.getContext('2d');
             ctx.drawImage(img, 0, 0, width, height);
             
+            // Compressione in formato JPEG al 70% della qualità originale
             const compressedDataUrl = canvas.toDataURL('image/jpeg', 0.7);
             callback(compressedDataUrl);
         };
@@ -857,10 +838,6 @@ function resetTutto() {
 // APERTURA MEDIA A SCHERMO INTERO (NUOVA SCHEDA NATIVA)
 // =======================================================
 function openMedia(url, type) {
-    if (type === 'drive') {
-        window.open(url, '_blank');
-        return;
-    }
     const newWindow = window.open();
     if (newWindow) {
         newWindow.document.write(`
@@ -914,32 +891,15 @@ function render() {
         const card = document.createElement("div");
         card.className = "card";
 
-        // Gestione dinamica del tipo di render (Immagine Base64, Video Base64 o iFrame Google Drive)
-        let mediaTagContent = "";
-        if (item.imageUrl) {
-            if (item.mediaType === "drive") {
-                mediaTagContent = `<iframe src="${item.imageUrl}" class="image-preview" style="border:none;" allow="autoplay"></iframe>`;
-            } else if (item.mediaType === "video") {
-                mediaTagContent = `<video class="image-preview" muted onclick="openMedia('${item.imageUrl}', 'video')"><source src="${item.imageUrl}"></video>`;
-            } else {
-                mediaTagContent = `<img src="${item.imageUrl}" class="image-preview" alt="Preview" onclick="openMedia('${item.imageUrl}', 'image')">`;
-            }
-        }
-
         const imageAreaContent = item.imageUrl ? `
             <div class="image-preview-container">
-                ${mediaTagContent}
+                ${item.mediaType === "video" ? `<video class="image-preview" muted onclick="openMedia('${item.imageUrl}', 'video')"><source src="${item.imageUrl}"></video>` : `<img src="${item.imageUrl}" class="image-preview" alt="Preview" onclick="openMedia('${item.imageUrl}', 'image')">`}
                 <button class="remove-image-btn" onclick="removeImage(${i})" title="Rimuovi media">X</button>
             </div>
         ` : `
-            <div class="placeholder image-placeholder" style="padding: 20px 10px;">
-                <div onclick="selectImage(${i})" style="display:flex; flex-direction:column; align-items:center; cursor:pointer; width:100%;">
-                    <span class="plus-icon">+</span>
-                    <span class="placeholder-text">${previewText}</span>
-                </div>
-                <div onclick="promptDriveLink(${i})" style="margin-top: 14px; font-size: 12px; color: #0284c7; font-weight: 600; text-decoration: underline; cursor: pointer; transition: color 0.2s;" onmouseover="this.style.color='#0369a1'" onmouseout="this.style.color='#0284c7'">
-                    🔗 Inserisci Link Drive
-                </div>
+            <div class="placeholder image-placeholder" onclick="selectImage(${i})" title="Clicca per aggiungere un file multimediale">
+                <span class="plus-icon">+</span>
+                <span class="placeholder-text">${previewText}</span>
             </div>
         `;
 
@@ -955,4 +915,35 @@ function render() {
             ${imageAreaContent}
 
             <div class="field-row">
-                <span class="field-label">
+                <span class="field-label">Copy:</span>
+                <div class="field-value" contenteditable="true" onblur="updatePostField(${i}, 'copy', this.innerText)">${item.copy}</div>
+            </div>
+
+            <div class="field-row">
+                <span class="field-label">Obiettivo:</span>
+                <div class="field-value" contenteditable="true" onblur="updatePostField(${i}, 'goal', this.innerText)">${item.goal}</div>
+            </div>
+
+            <div class="field-row">
+                <span class="field-label">Note:</span>
+                <div class="field-value" contenteditable="true" onblur="updatePostField(${i}, 'notes', this.innerText)">${item.notes}</div>
+            </div>
+
+            <div class="card-footer">
+                <div class="footer-item">
+                    <span class="field-label">Data:</span>
+                    <span class="field-value" contenteditable="true" onblur="updatePostField(${i}, 'date', this.innerText)">${item.date}</span>
+                </div>
+                <div class="footer-item">
+                    <span class="field-label">Ora:</span>
+                    <span class="field-value" contenteditable="true" onblur="updatePostField(${i}, 'time', this.innerText)">${item.time}</span>
+                </div>
+            </div>
+        `;
+        grid.appendChild(card);
+    });
+}
+</script>
+
+</body>
+</html>

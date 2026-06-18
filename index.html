@@ -175,6 +175,53 @@ button:active {
     box-shadow: var(--shadow-md);
 }
 
+/* AZIONI CARD (ELIMINA E SPOSTA) */
+.card-actions {
+    position: absolute;
+    top: 22px;
+    right: 22px;
+    display: flex;
+    gap: 6px;
+    z-index: 10;
+}
+
+.action-btn {
+    border: none;
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: bold;
+    cursor: pointer;
+    font-size: 14px;
+    transition: all 0.2s ease;
+    padding: 0;
+}
+
+.action-btn.move-btn {
+    background: #f1f5f9;
+    color: #475569;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+}
+.action-btn.move-btn:hover {
+    background: #e2e8f0;
+    color: #0f172a;
+    transform: scale(1.05);
+}
+
+.action-btn.delete-btn {
+    background: #fef2f2;
+    color: #ef4444;
+    font-size: 12px;
+}
+.action-btn.delete-btn:hover { 
+    background: #ef4444; 
+    color: white;
+    transform: scale(1.05);
+}
+
 /* BADGES PIATTAFORMA */
 .badge {
     display: inline-flex;
@@ -203,7 +250,7 @@ button:active {
     font-size: 19px;
     font-weight: 700;
     color: var(--text-main);
-    width: 85%;
+    width: 70%; /* Ridotto leggermente per far spazio ai pulsanti */
     line-height: 1.4;
     word-break: break-word;
 }
@@ -286,7 +333,7 @@ button:active {
     transform: scale(1.05);
 }
 
-/* DRIVE CONTAINER (NUOVO STILE) */
+/* DRIVE CONTAINER */
 .drive-container {
     display: flex;
     align-items: center;
@@ -384,32 +431,6 @@ button:active {
     min-width: unset;
 }
 
-/* TASTO ELIMINA POST */
-.delete-btn {
-    position: absolute;
-    top: 22px;
-    right: 22px;
-    background: #fef2f2;
-    color: #ef4444;
-    border: none;
-    width: 30px;
-    height: 30px;
-    border-radius: 50%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-weight: bold;
-    cursor: pointer;
-    font-size: 12px;
-    transition: all 0.2s ease;
-    z-index: 10;
-}
-.delete-btn:hover { 
-    background: #ef4444; 
-    color: white;
-    transform: scale(1.05);
-}
-
 /* RESPONSIVE */
 @media (max-width: 768px) {
     body { padding: 12px; }
@@ -432,7 +453,7 @@ button:active {
     .header-container { background: #ffffff !important; box-shadow: none !important; border: 1px solid #e2e8f0 !important; padding: 14px 20px !important; margin-bottom: 16px !important; border-radius: 12px !important; }
     .header-title { font-size: 18px !important; border-bottom: none !important; padding: 0 !important; margin-bottom: 4px !important; }
     .meta-info { margin-top: 10px !important; padding-top: 10px !important; gap: 12px !important; font-size: 11px !important; }
-    .btn-group, .delete-btn, .clear-btn, .badge::after, .remove-image-btn, .plus-icon, .drive-btn { display: none !important; }
+    .btn-group, .card-actions, .clear-btn, .badge::after, .remove-image-btn, .plus-icon, .drive-btn { display: none !important; }
     .grid { display: grid !important; grid-template-columns: repeat(4, 1fr) !important; gap: 12px !important; width: 100% !important; justify-content: center !important; }
     .card { background: #ffffff !important; border: 1px solid #cbd5e1 !important; box-shadow: none !important; border-radius: 12px !important; padding: 12px !important; gap: 8px !important; page-break-inside: avoid !important; break-inside: avoid !important; transform: none !important; min-width: 0 !important; }
     .badge { border: 1px solid rgba(0,0,0,0.05) !important; padding: 3px 10px !important; font-size: 9px !important; border-radius: 12px !important; display: inline-block !important; }
@@ -565,6 +586,27 @@ function updatePostField(index, field, value) {
 function togglePlatform(index) {
     if(data[index]) {
         data[index].platform = data[index].platform === "ig" ? "fb" : "ig";
+        boardRef.child("posts").set(data);
+    }
+}
+
+// =======================================================
+// FUNZIONI DI RIORDINAMENTO (MOVE UP / MOVE DOWN)
+// =======================================================
+function moveCardUp(index) {
+    if (index > 0) {
+        const temp = data[index];
+        data[index] = data[index - 1];
+        data[index - 1] = temp;
+        boardRef.child("posts").set(data);
+    }
+}
+
+function moveCardDown(index) {
+    if (index < data.length - 1) {
+        const temp = data[index];
+        data[index] = data[index + 1];
+        data[index + 1] = temp;
         boardRef.child("posts").set(data);
     }
 }
@@ -715,8 +757,9 @@ function render() {
         const badgeText = isIg ? "Instagram" : "Facebook";
         const previewText = isIg ? "Immagine / Reel Preview" : "Immagine / Visual";
 
-        // Compatibilità retroattiva per le card vecchie senza driveLink
         const currentDriveLink = item.driveLink || "";
+        const isFirst = i === 0;
+        const isLast = i === data.length - 1;
 
         const card = document.createElement("div");
         card.className = "card";
@@ -733,8 +776,20 @@ function render() {
             </div>
         `;
 
+        // Generazione bottoni direzionali dinamici
+        let moveButtonsHTML = '';
+        if (!isFirst) {
+            moveButtonsHTML += `<button class="action-btn move-btn" onclick="moveCardUp(${i})" title="Sposta indietro">←</button>`;
+        }
+        if (!isLast) {
+            moveButtonsHTML += `<button class="action-btn move-btn" onclick="moveCardDown(${i})" title="Sposta avanti">→</button>`;
+        }
+
         card.innerHTML = `
-            <button class="delete-btn" onclick="deleteCard(${i})">X</button>
+            <div class="card-actions">
+                ${moveButtonsHTML}
+                <button class="action-btn delete-btn" onclick="deleteCard(${i})" title="Elimina post">X</button>
+            </div>
 
             <div class="badge ${badgeClass}" onclick="togglePlatform(${i})" title="Clicca per cambiare piattaforma">
                 ${badgeText}
